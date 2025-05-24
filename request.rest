@@ -1,0 +1,95 @@
+# Game-EX API Tests
+
+# Base URL
+@baseUrl = http://localhost:5000
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTc0ODA3MjYxNCwiZXhwIjoxNzQ4Njc3NDE0fQ._nifOj9hqv4HpJvgWHXE_5Je6SoagDmf60YzyRONVPk
+@accessToken = 
+@contentType = application/json
+
+### Register User
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Login User
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Refresh Token
+POST {{baseUrl}}/auth/refresh
+Content-Type: {{contentType}}
+
+{
+  "token": "{{refreshToken}}"
+}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Content-Type: {{contentType}}
+
+{
+  "token": "{{refreshToken}}"
+}
+
+### Get All Games (Guest)
+GET {{baseUrl}}/games
+
+### Get Game Detail (Guest)
+GET {{baseUrl}}/games/1
+
+### Create Game (Auth)
+POST {{baseUrl}}/games
+Content-Type: {{contentType}}
+Cookie: accessToken={{accessToken}}
+
+{
+  "gambar": "game1.jpg",
+  "harga": 199000,
+  "tag": "Racing",
+  "deskripsi": "High speed racing game"
+}
+
+### Update Game (Auth)
+PUT {{baseUrl}}/games/1
+Content-Type: {{contentType}}
+Cookie: accessToken={{accessToken}}
+
+{
+  "deskripsi": "Updated game description"
+}
+
+### Delete Game (Auth)
+DELETE {{baseUrl}}/games/1
+Cookie: accessToken={{accessToken}}
+
+### Buy Game
+POST {{baseUrl}}/users/buy
+Content-Type: {{contentType}}
+Cookie: accessToken={{accessToken}}
+
+{
+  "gameId": 2
+}
+
+### Get User Library
+GET {{baseUrl}}/users/library
+Cookie: accessToken={{accessToken}}
+
+### Update Game Status
+PATCH {{baseUrl}}/users/library/2
+Content-Type: {{contentType}}
+Cookie: accessToken={{accessToken}}
+
+{
+  "status": "terinstall"
+}
