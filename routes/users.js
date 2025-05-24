@@ -8,7 +8,7 @@ import {
   getMyGames,
   deleteAccount
 } from '../controllers/userController.js';
-import { verifyToken } from '../middlewares/auth.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
