@@ -30,7 +30,7 @@ steps:
       ]
     id: "deploy"
 
-  # Optional: Clean up old images
+
   - name: "gcr.io/cloud-builders/gcloud"
     args: [
       "container",
@@ -42,8 +42,6 @@ steps:
     ]
     id: "cleanup"
 
-options:
-  logging: CLOUD_LOGGING_ONLY
-  machineType: "E2_HIGHCPU_8"  # Faster builds for Node.js projects
+
  
 
