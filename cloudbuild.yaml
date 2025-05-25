@@ -15,13 +15,12 @@ steps:
       [
         "run",
         "deploy",
-        "game-ex-be",  # Consistent naming with image
+        "game-ex-be",  
         "--image",
         "gcr.io/$PROJECT_ID/game-ex-be:$COMMIT_SHA",
         "--update-secrets","KEY_CREDENTIALS=cred-KEY_CREDENTIALS:latest",
         "--set-env-vars",
         "DB_HOST=$_DB_HOST,DB_USER=$_DB_USER,DB_PASS=$_DB_PASS,DB_NAME=$_DB_NAME,ACCESS_TOKEN_SECRET=$_ACCESS_TOKEN_SECRET,REFRESH_TOKEN_SECRET=$_REFRESH_TOKEN_SECRET",
-        "--platform", "managed",
         "--region", "us-central1",
         "--port", "5000",
         "--timeout", "1000s",
@@ -42,6 +41,7 @@ steps:
     ]
     id: "cleanup"
 
-
+options:
+  logging: CLOUD_LOGGING_ONLY
  
 
