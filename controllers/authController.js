@@ -38,7 +38,7 @@ export const login = async (req, res) => {
     await User.update({ refresh_token: refreshToken }, { where: { id: user.id } });
 
     res.cookie('accessToken', accessToken, {
-      httpOnly: true,
+      httpOnly: false,
       maxAge: 15 * 60 * 1000 // 15 menit
     });
 
