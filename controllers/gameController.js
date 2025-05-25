@@ -90,10 +90,39 @@ export const updateGame = async (req, res) => {
       return res.status(403).json({ msg: 'Unauthorized' });
     }
 
-    const { nama, ...rest } = req.body;
-    const updatedGame = await game.update({ nama, ...rest });
+    let updateData = {
+      nama: req.body.nama,
+      harga: parseFloat(req.body.harga),
+      tag: req.body.tag,
+      deskripsi: req.body.deskripsi
+    };
+
+    // Handle file upload if exists
+    if (req.file) {
+      const fileId = uuidv4();
+      const fileName = `${fileId}_${req.file.originalname}`;
+      const file = bucket.file(fileName);
+
+      const stream = file.createWriteStream({
+        metadata: {
+          contentType: req.file.mimetype
+        }
+      });
+
+      await new Promise((resolve, reject) => {
+        stream.on('error', reject);
+        stream.on('finish', resolve);
+        stream.end(req.file.buffer);
+      });
+
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+      updateData.gambar = publicUrl;
+    }
+
+    const updatedGame = await game.update(updateData);
     res.json(updatedGame);
   } catch (error) {
+    console.error('Update error:', error);
     res.status(500).json({ msg: error.message });
   }
 };
