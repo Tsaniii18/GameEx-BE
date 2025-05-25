@@ -8,13 +8,14 @@ import {
   getMyGames,
   getLibrary,
   deleteAccount,
+  getCurrentUser
 } from '../controllers/userController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
 router.use(verifyToken);
-
+router.get('/me', getCurrentUser);
 router.patch('/profile', updateProfile);
 router.post('/buy', buyGame);
 router.get('/library', getLibrary); 

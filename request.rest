@@ -3,7 +3,7 @@
 # Base URL
 @baseUrl = http://localhost:5000
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0ODE2MTA0NywiZXhwIjoxNzQ4NzY1ODQ3fQ.TV_mWLj_8qjZJUI4ruOUlJZpxKq6Sxef798-1es29eU 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0ODE2NjUzMSwiZXhwIjoxNzQ4MTY3NDMxfQ.-p9c37Wbc5URLT1UXQnIxuiO5Joh5-F1IxNPWA7xPCY
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc0ODE4NzUwNSwiZXhwIjoxNzQ4MTg4NDA1fQ.P8BgkefFonYtH8dFMhm8gf10kWaI6JPjY5hcqtxDYbA
 @contentType = application/json
 
 ### Register User
@@ -92,6 +92,9 @@ Cookie: accessToken={{accessToken}}
   "discount": 20.3
 }
 
+### Get User
+GET {{baseUrl}}/users/me
+Cookie: accessToken={{accessToken}}
 
 ### Get User Library
 GET {{baseUrl}}/users/library

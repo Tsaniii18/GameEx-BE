@@ -4,6 +4,23 @@ import Game from '../models/Game.js';
 import Transaction from '../models/Transaction.js';
 import Gallery from '../models/Gallery.js';
 
+export const getCurrentUser = async (req, res) => {
+  if (!req.user) return res.sendStatus(401);
+
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: ['id', 'username', 'email', 'foto_profil']
+    });
+
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+
 export const updateProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
@@ -61,24 +78,6 @@ export const buyGame = async (req, res) => {
   }
 };
 
-// export const updateGameStatus = async (req, res) => {
-//   try {
-//     const gallery = await Gallery.findOne({
-//       where: {
-//         user_id: req.user.id,
-//         game_id: req.params.gameId
-//       }
-//     });
-    
-//     if (!gallery) return res.status(404).json({ msg: 'Game not found in library' });
-    
-//     const updatedGallery = await gallery.update({ status: req.body.status });
-//     res.json(updatedGallery);
-//   } catch (error) {
-//     res.status(500).json({ msg: error.message });
-//   }
-// };
-
 export const updateGameStatus = async (req, res) => {
   try {
     const { status } = req.body;
@@ -101,24 +100,6 @@ export const updateGameStatus = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
-// export const deleteFromLibrary = async (req, res) => {
-//   try {
-//     const gallery = await Gallery.findOne({
-//       where: {
-//         user_id: req.user.id,
-//         game_id: req.params.gameId
-//       }
-//     });
-    
-//     if (!gallery) return res.status(404).json({ msg: 'Game not found in library' });
-    
-//     await gallery.destroy();
-//     res.json({ msg: 'Game removed from library' });
-//   } catch (error) {
-//     res.status(500).json({ msg: error.message });
-//   }
-// };
 
 export const deleteFromLibrary = async (req, res) => {
   try {
@@ -175,26 +156,6 @@ export const getLibrary = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
-// export const getLibrary = async (req, res) => {
-//   try {
-//     const library = await Gallery.findAll({
-//       where: { user_id: req.user.id },
-//       include: [{
-//         model: Game,
-//         attributes: ['id', 'nama', 'gambar', 'deskripsi'] // Include only necessary attributes
-//       }]
-//     });
-    
-//     if (!library || library.length === 0) {
-//       return res.status(200).json([]); // Return empty array if no games
-//     }
-    
-//     res.json(library);
-//   } catch (error) {
-//     res.status(500).json({ msg: error.message });
-//   }
-// };
 
 export const deleteAccount = async (req, res) => {
   try {
