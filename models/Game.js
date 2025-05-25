@@ -20,7 +20,11 @@ const Game = sequelize.define('Game', {
   tag: DataTypes.STRING,
   discount: {
     type: DataTypes.FLOAT,
-    defaultValue: 0
+    defaultValue: 0,
+    validate: {
+    min: 0,
+    max: 100
+  }
   },
   deskripsi: DataTypes.TEXT
 });

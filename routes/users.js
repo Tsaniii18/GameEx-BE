@@ -6,7 +6,8 @@ import {
   deleteFromLibrary,
   getPurchaseHistory,
   getMyGames,
-  deleteAccount
+  getLibrary,
+  deleteAccount,
 } from '../controllers/userController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -16,6 +17,7 @@ router.use(verifyToken);
 
 router.put('/profile', updateProfile);
 router.post('/buy', buyGame);
+router.get('/library', getLibrary); 
 router.patch('/library/:gameId', updateGameStatus);
 router.delete('/library/:gameId', deleteFromLibrary);
 router.get('/history', getPurchaseHistory);

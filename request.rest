@@ -2,8 +2,8 @@
 
 # Base URL
 @baseUrl = http://localhost:5000
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0ODA5MDEwOSwiZXhwIjoxNzQ4Njk0OTA5fQ.sfdj15mg1QY5F7VXNvXzcuQ0Cc4Cj4o9fG8n97OqGB8
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0ODA5MDEwOSwiZXhwIjoxNzQ4MDkxMDA5fQ._b6B2HLkNeQytCmnzV12nWQO6aVzYf11sHLD8TU5Lvo
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0ODE2MTA0NywiZXhwIjoxNzQ4NzY1ODQ3fQ.TV_mWLj_8qjZJUI4ruOUlJZpxKq6Sxef798-1es29eU 
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0ODE2MjQxNSwiZXhwIjoxNzQ4MTYzMzE1fQ.oUNRU-hzakhYY0jtSF0sM0h8nNZ06sHwix_35kXreno
 @contentType = application/json
 
 ### Register User
@@ -53,14 +53,15 @@ Content-Type: {{contentType}}
 Cookie: accessToken={{accessToken}}
 
 {
-  "gambar": "game1.jpg",
+  "nama": "Speed Racer",
+  "gambar": "https://storage.googleapis.com/game-ex-img/6229c454-092d-45eb-9446-3be94a9e93e9_Screenshot%20from%202025-05-24%2010-41-47.png",
   "harga": 199000,
   "tag": "Racing",
   "deskripsi": "High speed racing game"
 }
 
 ### Update Game (Auth)
-PUT {{baseUrl}}/games/1
+PUT {{baseUrl}}/games/3
 Content-Type: {{contentType}}
 Cookie: accessToken={{accessToken}}
 
@@ -78,15 +79,26 @@ Content-Type: {{contentType}}
 Cookie: accessToken={{accessToken}}
 
 {
-  "gameId": 1
+  "gameId": 2
 }
+
+
+### set discount
+POST {{baseUrl}}/games/3/discount
+Content-Type: {{contentType}}
+Cookie: accessToken={{accessToken}}
+
+{
+  "discount": 20.3
+}
+
 
 ### Get User Library
 GET {{baseUrl}}/users/library
 Cookie: accessToken={{accessToken}}
 
 ### Update Game Status
-PATCH {{baseUrl}}/users/library/2
+PATCH {{baseUrl}}/users/library/1
 Content-Type: {{contentType}}
 Cookie: accessToken={{accessToken}}
 
