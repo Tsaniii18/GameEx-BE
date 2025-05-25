@@ -11,7 +11,20 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({ credentials: true, origin: 'https://a-07-451003.uc.r.appspot.com' }));
+// app.use(cors({ credentials: true, origin: 'https://a-07-451003.uc.r.appspot.com' }));
+
+app.use(cors({
+  origin: 'https://a-07-451003.uc.r.appspot.com',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Optional: respond to preflight requests
+app.options('*', cors({
+  origin: 'https://a-07-451003.uc.r.appspot.com',
+  credentials: true,
+}));
 
 app.use(cookieParser());
 app.use(express.json());
