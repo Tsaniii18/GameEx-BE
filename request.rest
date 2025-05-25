@@ -2,8 +2,8 @@
 
 # Base URL
 @baseUrl = http://localhost:5000
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTc0ODA3MjYxNCwiZXhwIjoxNzQ4Njc3NDE0fQ._nifOj9hqv4HpJvgWHXE_5Je6SoagDmf60YzyRONVPk
-@accessToken = 
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0ODA5MDEwOSwiZXhwIjoxNzQ4Njk0OTA5fQ.sfdj15mg1QY5F7VXNvXzcuQ0Cc4Cj4o9fG8n97OqGB8
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0ODA5MDEwOSwiZXhwIjoxNzQ4MDkxMDA5fQ._b6B2HLkNeQytCmnzV12nWQO6aVzYf11sHLD8TU5Lvo
 @contentType = application/json
 
 ### Register User
@@ -78,7 +78,7 @@ Content-Type: {{contentType}}
 Cookie: accessToken={{accessToken}}
 
 {
-  "gameId": 2
+  "gameId": 1
 }
 
 ### Get User Library

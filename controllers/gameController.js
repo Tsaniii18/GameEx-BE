@@ -24,9 +24,10 @@ export const getGameDetail = async (req, res) => {
 
 export const createGame = async (req, res) => {
   try {
-    const { gambar, harga, tag, deskripsi } = req.body;
+    const { nama, gambar, harga, tag, deskripsi } = req.body;
     const game = await Game.create({
       uploader_id: req.user.id,
+      nama,
       gambar,
       harga,
       tag,
@@ -38,6 +39,7 @@ export const createGame = async (req, res) => {
   }
 };
 
+
 export const updateGame = async (req, res) => {
   try {
     const game = await Game.findByPk(req.params.id);
@@ -47,13 +49,13 @@ export const updateGame = async (req, res) => {
       return res.status(403).json({ msg: 'Unauthorized' });
     }
 
-    const updatedGame = await game.update(req.body);
+    const { nama, ...rest } = req.body;
+    const updatedGame = await game.update({ nama, ...rest });
     res.json(updatedGame);
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 };
-
 export const applyDiscount = async (req, res) => {
   try {
     const { discount } = req.body;

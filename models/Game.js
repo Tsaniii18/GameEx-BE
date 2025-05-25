@@ -8,6 +8,10 @@ const Game = sequelize.define('Game', {
     primaryKey: true,
     autoIncrement: true
   },
+  nama: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   gambar: DataTypes.STRING,
   harga: {
     type: DataTypes.FLOAT,
