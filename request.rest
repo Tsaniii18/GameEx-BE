@@ -3,7 +3,7 @@
 # Base URL
 @baseUrl = http://localhost:5000
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0ODE2MTA0NywiZXhwIjoxNzQ4NzY1ODQ3fQ.TV_mWLj_8qjZJUI4ruOUlJZpxKq6Sxef798-1es29eU 
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0ODE2MjQxNSwiZXhwIjoxNzQ4MTYzMzE1fQ.oUNRU-hzakhYY0jtSF0sM0h8nNZ06sHwix_35kXreno
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc0ODE2NjUzMSwiZXhwIjoxNzQ4MTY3NDMxfQ.-p9c37Wbc5URLT1UXQnIxuiO5Joh5-F1IxNPWA7xPCY
 @contentType = application/json
 
 ### Register User
@@ -98,7 +98,7 @@ GET {{baseUrl}}/users/library
 Cookie: accessToken={{accessToken}}
 
 ### Update Game Status
-PATCH {{baseUrl}}/users/library/1
+PATCH {{baseUrl}}/users/library/2
 Content-Type: {{contentType}}
 Cookie: accessToken={{accessToken}}
 

@@ -2,6 +2,9 @@ import { Op } from 'sequelize';
 import Game from '../models/Game.js';
 import Transaction from '../models/Transaction.js';
 import Gallery from '../models/Gallery.js';
+import { bucket } from '../config/storageGCP.js';
+import { v4 as uuidv4 } from 'uuid';
+
 
 export const getAllGames = async (req, res) => {
   try {
@@ -23,19 +26,57 @@ export const getGameDetail = async (req, res) => {
 };
 
 export const createGame = async (req, res) => {
-  try {
-    const { nama, gambar, harga, tag, deskripsi } = req.body;
-    const game = await Game.create({
-      uploader_id: req.user.id,
-      nama,
-      gambar,
-      harga,
-      tag,
-      deskripsi
+ try {
+    // Handle image upload first
+    if (!req.file) {
+      return res.status(400).json({ msg: 'No image uploaded' });
+    }
+
+    // Upload to GCP
+    const fileId = uuidv4();
+    const fileName = `${fileId}_${req.file.originalname}`;
+    const file = bucket.file(fileName);
+
+    const stream = file.createWriteStream({
+      metadata: {
+        contentType: req.file.mimetype
+      }
     });
-    res.status(201).json(game);
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
+
+    // Handle upload errors
+    stream.on('error', (err) => {
+      console.error(err);
+      return res.status(500).json({ msg: 'Error uploading image' });
+    });
+
+    // When upload is complete
+    stream.on('finish', async () => {
+      try {
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+        
+        // Now create the game with the image URL
+        const { nama, harga, tag, deskripsi } = req.body;
+
+        const game = await Game.create({
+          uploader_id: req.user.id,
+          nama,
+          gambar: publicUrl, // Using the uploaded image URL
+          harga: parseFloat(harga),
+          tag,
+          deskripsi
+        });
+
+        res.status(201).json(game);
+      } catch (error) {
+        console.error('Game creation error:', error);
+        res.status(500).json({ msg: error.message });
+      }
+    });
+
+    stream.end(req.file.buffer);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
   }
 };
 

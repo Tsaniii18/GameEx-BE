@@ -9,6 +9,7 @@ import {
   deleteGame
 } from '../controllers/gameController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
+import { upload } from '../middlewares/upload.js';
 
 const router = express.Router();
 
@@ -17,7 +18,8 @@ router.get('/', getAllGames);
 router.get('/:id', getGameDetail);
 
 // Protected routes
-router.post('/', verifyToken, createGame);
+// router.post('/', verifyToken, createGame);
+router.post('/', verifyToken, upload.single('gambar'), createGame);
 router.put('/:id', verifyToken, updateGame);
 router.patch('/:id/discount', verifyToken, applyDiscount);
 router.get('/:id/sales', verifyToken, getSalesHistory);

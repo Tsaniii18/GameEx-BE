@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.use(verifyToken);
 
-router.put('/profile', updateProfile);
+router.patch('/profile', updateProfile);
 router.post('/buy', buyGame);
 router.get('/library', getLibrary); 
 router.patch('/library/:gameId', updateGameStatus);
