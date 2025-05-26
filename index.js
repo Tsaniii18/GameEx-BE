@@ -13,8 +13,8 @@ const app = express();
 const corsOptions = {
   origin: 'https://a-07-451003.uc.r.appspot.com', // frontend URL
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  // allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
 
 app.options('*', cors(corsOptions)); // handle preflight
