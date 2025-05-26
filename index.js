@@ -10,16 +10,8 @@ import usersRoutes from './routes/users.js';
 dotenv.config();
 const app = express();
 
-const corsOptions = {
-  origin: 'https://a-07-451003.uc.r.appspot.com', // frontend URL
-  credentials: true,
-  // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  // allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-};
-
-app.options('*', cors(corsOptions)); // handle preflight
-
-app.use(cors(corsOptions));
+// Middleware
+app.use(cors({ credentials: true, origin: 'https://a-07-451003.uc.r.appspot.com' }));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -39,14 +31,7 @@ app.use('/auth', authRoutes);
 app.use('/games', gamesRoutes);
 app.use('/users', usersRoutes);
 
-const PORT = process.env.PORT || 5000; 
+app.listen(5000, () => console.log('Server running on port 5000'));
 
-app.listen(PORT, async () => {
-  console.log(`Server running on port ${PORT}`);
-  try {
-    await sequelize.sync();
-    console.log('Database synced');
-  } catch (error) {
-    console.error('Database sync error:', error);
-  }
-});
+// Export the app for testing purposes
+//huan is here
