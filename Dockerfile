@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN mkdir -p /app/cred
 ARG KEY_CREDENTIALS
-RUN echo "$_KEY_CREDENTIALS_JSON" > /app/cred/key_credentials.json
+RUN echo "$KEY_CREDENTIALS" > /app/cred/key_credentials.json
 
 
 COPY . .
