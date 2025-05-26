@@ -49,4 +49,12 @@ app.use('/auth', authRoutes);
 app.use('/games', gamesRoutes);
 app.use('/users', usersRoutes);
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+app.listen(PORT, async () => {
+  console.log(`Server running on port ${PORT}`);
+  try {
+    await sequelize.sync();
+    console.log('Database synced');
+  } catch (error) {
+    console.error('Database sync error:', error);
+  }
+});
