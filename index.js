@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({ credentials: true, origin: 'https://a-07-451003.uc.r.appspot.com' }));
+app.use(cors({ credentials: true, origin: "https://a-07-451003.uc.r.appspot.com" }));
 
 app.use(cookieParser());
 app.use(express.json());
