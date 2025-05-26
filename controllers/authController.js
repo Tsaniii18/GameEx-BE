@@ -37,7 +37,7 @@ export const login = async (req, res) => {
 
     await User.update({ refresh_token: refreshToken }, { where: { id: user.id } });
 
-    res.cookie('accessToken', accessToken, {
+   res.cookie('accessToken', accessToken, {
       httpOnly: false,
       sameSite: "none",
       maxAge: 15 * 60 * 1000,
