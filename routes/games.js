@@ -18,9 +18,7 @@ router.get('/', getAllGames);
 router.get('/:id', getGameDetail);
 
 // Protected routes
-// router.post('/', verifyToken, createGame);
 router.post('/', verifyToken, upload.single('gambar'), createGame);
-// router.put('/:id', verifyToken, updateGame);
 router.put('/:id', verifyToken, upload.single('gambar'), updateGame);
 router.patch('/:id/discount', verifyToken, applyDiscount);
 router.get('/:id/sales', verifyToken, getSalesHistory);

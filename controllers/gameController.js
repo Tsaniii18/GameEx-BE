@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import Game from '../models/Game.js';
+import User from '../models/User.js'
 import Transaction from '../models/Transaction.js';
 import Gallery from '../models/Gallery.js';
 import { bucket } from '../config/storageGCP.js';
@@ -8,7 +9,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const getAllGames = async (req, res) => {
   try {
-    const games = await Game.findAll();
+    const games = await Game.findAll({
+      include: {
+        model: User,
+        as: 'User',
+        attributes: ['id', 'username', 'email']
+      }
+    });
     res.json(games);
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -17,7 +24,13 @@ export const getAllGames = async (req, res) => {
 
 export const getGameDetail = async (req, res) => {
   try {
-    const game = await Game.findByPk(req.params.id);
+    const game = await Game.findByPk(req.params.id, {
+      include: {
+        model: User,
+        as: 'User',
+        attributes: ['id', 'username', 'email']
+      }
+    });
     if (!game) return res.status(404).json({ msg: 'Game not found' });
     res.json(game);
   } catch (error) {
@@ -25,8 +38,9 @@ export const getGameDetail = async (req, res) => {
   }
 };
 
+
 export const createGame = async (req, res) => {
- try {
+  try {
     // Handle image upload first
     if (!req.file) {
       return res.status(400).json({ msg: 'No image uploaded' });
@@ -53,7 +67,7 @@ export const createGame = async (req, res) => {
     stream.on('finish', async () => {
       try {
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
-        
+
         // Now create the game with the image URL
         const { nama, harga, tag, deskripsi } = req.body;
 
@@ -85,7 +99,7 @@ export const updateGame = async (req, res) => {
   try {
     const game = await Game.findByPk(req.params.id);
     if (!game) return res.status(404).json({ msg: 'Game not found' });
-    
+
     if (game.uploader_id !== req.user.id) {
       return res.status(403).json({ msg: 'Unauthorized' });
     }
@@ -130,7 +144,7 @@ export const applyDiscount = async (req, res) => {
   try {
     const { discount } = req.body;
     const game = await Game.findByPk(req.params.id);
-    
+
     if (game.uploader_id !== req.user.id) {
       return res.status(403).json({ msg: 'Unauthorized' });
     }
@@ -160,7 +174,7 @@ export const deleteGame = async (req, res) => {
   try {
     const game = await Game.findByPk(req.params.id);
     if (!game) return res.status(404).json({ msg: 'Game not found' });
-    
+
     if (game.uploader_id !== req.user.id) {
       return res.status(403).json({ msg: 'Unauthorized' });
     }

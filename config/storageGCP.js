@@ -1,4 +1,6 @@
 import dotenv from 'dotenv';
+import path from 'path';
+
 dotenv.config();
 
 import multer from 'multer';
@@ -7,7 +9,7 @@ import { Storage } from '@google-cloud/storage';
 // Inisialisasi Google Cloud Storage
 const storage = new Storage({
   projectId: 'a-07-451003',
-  keyFilename: process.env.KEY_CREDRENTIALS, // pastikan path ini benar dan file-nya bisa diakses
+  keyFilename: path.resolve(process.env.KEY_CREDRENTIALS),
 });
 
 // Referensi bucket

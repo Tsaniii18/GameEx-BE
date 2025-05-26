@@ -15,7 +15,7 @@ import { verifyToken } from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
 router.use(verifyToken);
-router.get('/me', getCurrentUser);
+router.get('/me/:decode', getCurrentUser);
 router.patch('/profile', updateProfile);
 router.post('/buy', buyGame);
 router.get('/library', getLibrary); 

@@ -8,7 +8,7 @@ export const getCurrentUser = async (req, res) => {
   if (!req.user) return res.sendStatus(401);
 
   try {
-    const user = await User.findByPk(req.user.id, {
+    const user = await User.findByPk(req.params.decode, {
       attributes: ['id', 'username', 'email', 'foto_profil']
     });
 
@@ -19,7 +19,6 @@ export const getCurrentUser = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
 
 export const updateProfile = async (req, res) => {
   try {
@@ -40,7 +39,7 @@ export const updateProfile = async (req, res) => {
 
 export const buyGame = async (req, res) => {
   try {
-    const { gameId } = req.body;
+    const { gameId, paymentMethod } = req.body;
     const user = req.user;
     
     const existing = await Gallery.findOne({ 
@@ -63,6 +62,7 @@ export const buyGame = async (req, res) => {
       id_game: gameId,
       id_pembeli: user.id,
       harga_awal: game.harga,
+      metode_pembayaran: paymentMethod,
       discount: game.discount,
       harga_discount: hargaDiscount
     });
