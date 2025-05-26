@@ -1,14 +1,13 @@
 steps:
-  # Build Docker image dengan secret
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "build"
-      - "--build-arg=KEY_CREDENTIALS=$$KEY_CREDENTIALS"  # Gunakan secret sebagai build arg
+      - "--build-arg=KEY_CREDENTIALS_JSON=$$KEY_CREDENTIALS_JSON"  # Gunakan secret JSON
       - "-t"
       - "gcr.io/$PROJECT_ID/game-ex-be:$COMMIT_SHA"
       - "."
     id: "build"
-    secretEnv: ["KEY_CREDENTIALS"]  # Referensi secret
+    secretEnv: ["KEY_CREDENTIALS_JSON"]  # Referensi secret
 
   # Push Docker image
   - name: "gcr.io/cloud-builders/docker"
@@ -44,8 +43,8 @@ steps:
 # Deklarasi secret yang akan diakses selama build
 availableSecrets:
   secretManager:
-    - versionName: "projects/$PROJECT_ID/secrets/cred-KEY_CREDENTIALS/versions/latest"
-      env: "KEY_CREDENTIALS"
+    - versionName: "projects/$PROJECT_ID/secrets/cred-KEY_CREDENTIALS_JSON/versions/latest"
+      env: "KEY_CREDENTIALS_JSON"  # Sesuaikan dengan nama secret yang benar
 
 options:
   logging: CLOUD_LOGGING_ONLY
