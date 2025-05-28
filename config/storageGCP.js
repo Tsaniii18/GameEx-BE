@@ -9,7 +9,7 @@ import { Storage } from '@google-cloud/storage';
 // Inisialisasi Google Cloud Storage
 const storage = new Storage({
   projectId: 'a-07-451003',
-  keyFilename: process.env.KEY_CREDENTIALS, // pastikan path ini benar dan file-nya bisa diakses
+  keyFilename: process.env.KEY_CREDENTIALS || '/KEY_CREDENTIALS'
 });
 
 // Referensi bucket

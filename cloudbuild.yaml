@@ -2,12 +2,11 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "build"
-      - "--build-arg=KEY_CREDENTIALS_JSON=$$KEY_CREDENTIALS_JSON"  # Gunakan secret JSON
       - "-t"
       - "gcr.io/$PROJECT_ID/game-ex-be:$COMMIT_SHA"
       - "."
     id: "build"
-    secretEnv: ["KEY_CREDENTIALS_JSON"]  # Referensi secret
+ 
 
   # Push Docker image
   - name: "gcr.io/cloud-builders/docker"
@@ -21,12 +20,13 @@ steps:
       - "deploy"
       - "game-ex-be"
       - "--image=gcr.io/$PROJECT_ID/game-ex-be:$COMMIT_SHA"
-      - "--update-secrets=KEY_CREDENTIALS=cred-KEY_CREDENTIALS:latest"  # Gunakan versi terbaru secret
-      - "--set-env-vars=DB_HOST=$_DB_HOST,DB_USER=$_DB_USER,DB_PASS=$_DB_PASS,DB_NAME=$_DB_NAME,ACCESS_TOKEN_SECRET=$_ACCESS_TOKEN_SECRET,REFRESH_TOKEN_SECRET=$_REFRESH_TOKEN_SECRET"
+      - "--update-secrets=KEY_CREDENTIALS=key-credentials:latest"  
+      - "--set-env-vars=DB_HOST=$_DB_HOST,DB_USER=$_DB_USER,DB_PASS=$_DB_PASS,DB_NAME=$_DB_NAME,ACCESS_TOKEN_SECRET=$_ACCESS_TOKEN_SECRET,REFRESH_TOKEN_SECRET=$_REFRESH_TOKEN_SECRET,KEY_CREDENTIALS=/KEY_CREDENTIALS"
       - "--region=us-central1"
       - "--port=5000"
       - "--timeout=1000s"
       - "--allow-unauthenticated"
+      - "--platform=managed "
     id: "deploy"
 
   # Opsional: Hapus image lama
@@ -41,10 +41,10 @@ steps:
     id: "cleanup"
 
 # Deklarasi secret yang akan diakses selama build
-availableSecrets:
-  secretManager:
-    - versionName: "projects/$PROJECT_ID/secrets/cred-KEY_CREDENTIALS_JSON/versions/latest"
-      env: "KEY_CREDENTIALS_JSON"  # Sesuaikan dengan nama secret yang benar
+# availableSecrets:
+#   secretManager:
+#     - versionName: "projects/$PROJECT_ID/secrets/cred-KEY_CREDENTIALS_JSON/versions/latest"
+#       env: "KEY_CREDENTIALS_JSON"  # Sesuaikan dengan nama secret yang benar
 
 options:
   logging: CLOUD_LOGGING_ONLY
