@@ -3,6 +3,8 @@ import User from '../models/User.js';
 import Game from '../models/Game.js';
 import Transaction from '../models/Transaction.js';
 import Gallery from '../models/Gallery.js';
+import { bucket } from '../config/storageGCP.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export const getCurrentUser = async (req, res) => {
   if (!req.user) return res.sendStatus(401);
@@ -23,16 +25,49 @@ export const getCurrentUser = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
-    const { username, email, password, foto_profil } = req.body;
+    let updateData = {
+      username: req.body.username,
+      email: req.body.email
+    };
 
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      req.body.password = hashedPassword;
+    // Handle password update
+    if (req.body.password) {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      updateData.password = hashedPassword;
     }
 
-    const updatedUser = await user.update(req.body);
-    res.json(updatedUser);
+    // Handle file upload if exists
+    if (req.file) {
+      const fileId = uuidv4();
+      const fileName = `${fileId}_${req.file.originalname}`;
+      const file = bucket.file(fileName);
+
+      const stream = file.createWriteStream({
+        metadata: {
+          contentType: req.file.mimetype
+        }
+      });
+
+      await new Promise((resolve, reject) => {
+        stream.on('error', reject);
+        stream.on('finish', resolve);
+        stream.end(req.file.buffer);
+      });
+
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+      updateData.foto_profil = publicUrl;
+    }
+
+    const updatedUser = await user.update(updateData);
+    
+    // Return the updated user without sensitive data
+    const { password, ...userData } = updatedUser.toJSON();
+    res.json({
+      msg: 'Profile updated successfully',
+      user: userData
+    });
   } catch (error) {
+    console.error('Profile update error:', error);
     res.status(500).json({ msg: error.message });
   }
 };

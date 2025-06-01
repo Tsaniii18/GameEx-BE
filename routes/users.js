@@ -11,12 +11,13 @@ import {
   getCurrentUser
 } from '../controllers/userController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
+import { upload } from '../middlewares/upload.js';
 
 const router = express.Router();
 
 router.use(verifyToken);
 router.get('/me/:decode', getCurrentUser);
-router.patch('/profile', updateProfile);
+router.put('/profile', verifyToken, upload.single('foto_profil'), updateProfile); 
 router.post('/buy', buyGame);
 router.get('/library', getLibrary); 
 router.patch('/library/:gameId', updateGameStatus);
